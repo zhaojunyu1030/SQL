@@ -79,7 +79,7 @@ SELECT <columns> FROM <table> WHERE <predicate>;
 
 `COUNT`, `DISDINCT`, and `LIMIT` and `OFFSET`
 ```
-SELECT COUNT*) FROM <table> WHERE <predicate>;
+SELECT COUNT(*) FROM <table> WHERE <predicate>;
 SELECT COUNT(DISTINCT <column>) FROM <table> WHERE <predicate>;  # count of unique entries
 SELECT * FROM <table> LIMIT 25;                                  # only first 25 rows
 SELECT * FROM <table> LIMIT 15 OFFSET 10;                        # first 15 rows starting from row 11
@@ -328,6 +328,35 @@ WHERE LCASE(ANIMAL) = `cat`
 ```
 # use in DINSTINCT() func to get unique values
 
-```
 SELECT DISTINCT(UCASE(ANIMAL)) FROM PETRESCUE
+```
+
+### Date & Time Functions
+DATE: YYYYMMDD
+
+TIME: HHMMSS
+
+TIMESTAMP: YYYYXXDDHHMMSSZZZZZZ (X: month, Z: ms)
+
+`YEAR()`, `MONTH()`, `DAY()`, `DAYOFMONTH()`, `DAYOFWEEK()`, `DAYOFYEAR()`, `WEEK()`, `HOUR()`, `MINUTE()`, `SECOND()`
+
+`DAY()`
+
+Extract DAY portion from a date
+```
+SELECT DAY(rescueDate) FROM petRescue
+WHERE animal = `cat`
+```
+
+Get the number of rescues during the month of May
+```
+SELECT COUNT(*) FROM petRescue
+WHERE MONTH(rescueDate) = `05`
+```
+
+Date / Time arithmetic
+
+`DATE_ADD()`What day is it 3 days after each rescue date
+```
+SELECT DATE_ADD(rescueDate, INTERVAL 3 DAY) FROM petRescue
 ```
