@@ -360,3 +360,9 @@ Date / Time arithmetic
 ```
 SELECT DATE_ADD(rescueDate, INTERVAL 3 DAY) FROM petRescue
 ```
+`FROM_DAYS`, `DATEDIFF`, `CURRENT_DATE`, `CURRENT_TIME`
+
+How many days have passed since each rescue day till now
+```
+SELECT FROM_DAYS(DATEDIFF(CURRENT_DATE, rescueDate)) FROM petRescue
+```
