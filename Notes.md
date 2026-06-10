@@ -373,10 +373,12 @@ SELECT DATE_ADD(rescueDate, INTERVAL 3 DAY) FROM petRescue
 
 ### FROM_DAYS(), DATEDIFF(), CURRENT_DATE(), CURRENT_TIME()
 
-How many days have passed since each rescue day till now
+`FROM_DAYS()`
+Convert a day number into a date
 ```
 SELECT FROM_DAYS(DATEDIFF(CURRENT_DATE, rescueDate)) FROM petRescue
 ```
+
 # Sub-Queries
 Cannot evaluate Aggregate functions in the WHERE clause
 ```
@@ -401,4 +403,83 @@ Substitute the table name with a sub-query
 Ex.
 SELECT * FROM
         (SELECT emp_id, f_name, l_name, salary FROM employees) AS emp4all
+```
+
+## Multiple Tables
+`WHERE` ... `IN`
+```
+SELECT * FROM employees
+        WHERE dep_id IN
+        (SELECT dept_id_dep FROM departments
+                WHERE loc_id = `L002`)
+```
+
+## Access Multiple Tables with Implicit Join
+
+### Full-Join
+- Every row in the first table is joined with every row in the second table
+- The result set has more rows than both tables
+```
+SELECT * FROM employees, departments
+```
+
+Additional opperands to limit the result set
+```
+SELECT * FROM employees, departments
+        WHERE employees.dep_id = departments.dep_id_dp
+
+# shorter
+
+SELECT * FROM employees E, departments D
+        WHERE E.dep_id = D.dep_id_dp
+```
+
+```
+SELECT emp_id, dep_name
+        FROM employees E, departments D
+        WHERE E.dep_id = D.dep_id_dp
+
+# column names can be pre-fixed
+
+SELECT E.emp_id, D.dep_name FROM employees E, departments D
+        WHERE E.dep_id = D.dep_id_dp
+```
+
+# Access Databases Using Python (DB-API)
+
+## Connextion Methods
+- `.cursor()` Returns a new cursor object using the connection
+- `.commit()` Commits any pending transaction to the database
+- `.rollback()` Causes the database to rollback to the start of any pending transaction
+- `.close()` Close a database connection
+
+## Cursor Methods
+Manage the content of a fetch operation
+- `.callproc()`
+- `.execute()`
+- `.executemany()`
+- `.fetchone()`
+- `.fetchmany()`
+- `.fetchall()`
+- `.nextset()`
+- `.arraysize()`
+- `.close()`
+
+## Writing Code Using DB-API
+```
+from dbmodule import connect
+
+# Create connection object
+connection = connect('databasename', 'username', 'pswd')
+
+# Create a cursor object
+cursor = connection.cursor()
+
+# Run queries
+cursor.execute(`SELECT * FROM mytable`)
+results = cursor.fetchall()
+
+# Free resourses
+cursor.close()
+connection.close()
 ```
