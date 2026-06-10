@@ -1,6 +1,6 @@
-## SQL Statements
+# SQL Statements
 
-### Data Definition Language (DDL)
+## Data Definition Language (DDL)
 Define, change, or drop data.
 
 - `CREATE` Create tables and define its columns
@@ -8,7 +8,7 @@ Define, change, or drop data.
 - `TRUNCATE` Delete data in a table but not the table itself
 - `DROP` Delete tables
 
-`CREATE`
+### CREATE
 ```
 CREATE TABLE <table> (
     <column> <datatype> <optional parameters>,
@@ -23,61 +23,61 @@ CREATE TABLE author (
 );
 ```
 
-`ALTER TABLE` ... `ADD COLUMN`
+### ALTER TABLE ... ADD COLUMN
 ```
 ALTER TABLE <table>
     ADD COLUMN <column> <datatype>
     ...
 ```
 
-`ALTER TABLE` ... `ALTER COLUMN`
+### ALTER TABLE ... ALTER COLUMN
 ```
 ALTER TABLE <table>
     MODIFY <column> <datatype>;
 ```
 
-`ALTER TABLE` ... `DROP COLUMN`
+### ALTER TABLE ... DROP COLUMN
 ```
 ALTER TABLE <table>
     DROP COLUMN <column>;
 ```
 
-`ALTER TABLE` ... `CHANGE`
+### ALTER TABLE ... CHANGE
 ```
 ALTER TABLE `<table>` CHANGE `<oldColumnName>` `<newColumnName>` <datatype>;  # change column name
 ```
 
-`DROP TABLE`
+### DROP TABLE
 ```
 DROP TABLE <table>;
 ```
 
-`TRUNCATE TABLE`
+### TRUNCATE TABLE
 ```
 TRUNCATE TABLE <table>
     IMMEDIATE;
 ```
 
-### Data Manipulation Language (DML)
+## Data Manipulation Language (DML)
 Read and modify data. CRUD operation (Create, Read, Update, and Delete rows)
 
 - `INSERT` Insert a row or several rows into a table
 - `SELECT` Read or select row or rows from a table
 - `UPDATE` Edit row or rows in a table
-- ·DELETE` Remove a row or rows of data from a table
+- `DELETE` Remove a row or rows of data from a table
 
-`SELECT`
+### SELECT
 ```
 SELECT * FROM <table>;                     # select all rows
 SELECT <column1>, <column2> FROM <table>;  # select only C1 and C2
 ```
 
-`WHERE`
+### WHERE
 ```
 SELECT <columns> FROM <table> WHERE <predicate>;
 ```
 
-`COUNT`, `DISDINCT`, and `LIMIT` and `OFFSET`
+### COUNT, DISDINCT, and LIMIT and OFFSET
 ```
 SELECT COUNT(*) FROM <table> WHERE <predicate>;
 SELECT COUNT(DISTINCT <column>) FROM <table> WHERE <predicate>;  # count of unique entries
@@ -85,7 +85,7 @@ SELECT * FROM <table> LIMIT 25;                                  # only first 25
 SELECT * FROM <table> LIMIT 15 OFFSET 10;                        # first 15 rows starting from row 11
 ```
 
-`INSERT`
+### INSERT
 ```
 INSERT INTO <table>
     (<columns>)
@@ -94,14 +94,14 @@ VALUES
     ('<values>');
 ```
 
-`UPDATE`
+### UPDATE
 ```
 UPDATE <table>
 SET <<column> = <value>>, <...>
 WHERE <column> = '<value>';    # not using WHERE, every row will be modified
 ```
 
-`DELETE`
+### DELETE
 ```
 DELETE FROM <table>
 WHERE <column> = '<value>';    # not using WHERE, every row will be removed
@@ -110,10 +110,10 @@ DELETE FROM <table>
 WHERE <column> IN ('<value>', '<value>');
 ```
 
-## Relational Model
+# Relational Model
 Advantage is data independence.
 
-### Entity-Relational Model (ER Model)
+## Entity-Relational Model (ER Model)
 Tool to design relational databases.
 
 Entities are independent objects which have Attributes. Attributes are characteristics of the entity.
@@ -122,7 +122,7 @@ Entities map to tables in a Relational Database.
 
 Attributes map to columns in a table.
 
-### Primary Key
+### PRIMARY KEY
 Uniquely identifies each tuple or row in a table, preventing duplication of data and providing a way of defining relationships between tables.
 ```
 CREATE TABLE <table> (
@@ -139,7 +139,7 @@ CREATE TABLE BookShop_AuthorDetails (
 );
 ```
 
-### Foreign Key
+### FOREIGN KEY () REFERENCES ...
 Primary keys defined in other tables, creating a link between tables.
 ```
 CREATE TABLE <table2> (
@@ -147,6 +147,7 @@ CREATE TABLE <table2> (
     FOREIGN KEY (<column>) REFERENCES <table>
 );
 
+Ex.
 CREATE TABLE BookShop (
     BOOK_ID INT PRIMARY KEY,
     TITLE VARCHAR(100),
@@ -155,10 +156,11 @@ CREATE TABLE BookShop (
 );
 ```
 
-## Simplify SELECT Statement
+# Simplify SELECT Statement
 
-### String Pattern
-`WHERE` ... `LIKE` ...
+## String Pattern
+
+### WHERE ... LIKE ...
 ```
 SELECT <column> FROM <table>
     WHERE <column> LIKE <condition>
@@ -173,8 +175,9 @@ SELECT firstname FROM Author
                                  # %: any number of char; _: exactly one char
 ```
 
-### Range
-`WHERE` ... `BETWEEN` ... `AND` ...
+## Range
+
+### WHERE ... BETWEEN ... AND ...
 ```
 SELECT <column> FROM <table>
     WHERE <condition>
@@ -184,23 +187,25 @@ SELECT title, pages FROM Book
     WHERE pages BETWEEN 290 AND 300  # pages >= 290 and pages <= 300
 ```
 
-### Set of Values
-`WHERE` ... `IN` ...
+## Set of Values
+
+### WHERE ... IN ...
 ```
 SELECT <column> FROM <table>
     WHERE country IN ('AU','BR')  # country = 'AU' or country = 'BR'
 ```
 
-## Sort Result Sets
+# Sort Result Sets
 
-`ORDER BY`
+### ORDER BY
 By defalt, the set is sorted by ascending order (A-Z)
 ```
 SELECT <column> FROM <table>
     ORDER BY <column>
 ```
 
-Descending order (Z-A): `DESC`
+### DESC
+Descending order (Z-A)
 ```
 SELECT <column> FROM <table>
     ORDER BY <column> DESC
@@ -212,8 +217,9 @@ SELECT <column> FROM <table>
     ORDER BY <int>              # Ascending order by Column <int> (0-9)
 ```
 
-## Group Result Sets
-`GROUP BY`, `AS`
+# Group Result Sets
+
+### GROUP BY, AS
 ```
 SELECT <coulmn>, COUNT(<column>)
     AS <newColumn> FROM <table> GROUP BY <column>
@@ -235,10 +241,11 @@ CA               3
 CN               6
 ```
 
-## Restrict Result Sets
-`HAVING` filters result AFTER grouping
+# Restrict Result Sets
+### HAVING
+filters result AFTER grouping
 
-`WHERE` filters result BEFORE grouping
+WHERE filters result BEFORE grouping
 ```
 Ex.
 SELECT Country, COUNT(Country)
@@ -255,16 +262,16 @@ Country        Count
 CN               6
 ```
 
-## Built-In Functions
+# Built-In Functions
 
-### Aggregate Functions
+## Aggregate Functions
 Input: Collection of values
 
 Output: Single value
 
 `SUM()`, `MIN()`, `MAX()`, `AVG()`, ...
 
-`SUM()`
+### SUM()
 ```
 SUM(<column>)
 
@@ -277,12 +284,12 @@ SUM_OF_COST
 17.18
 ```
 
-`MIN()` / `MAX()`
+### MIN() / MAX()
 ```
-SELECT MAX(QUANTITY) FROM PETRESCUE WHERE PET = `Doga`
+SELECT MAX(QUANTITY) FROM PETRESCUE WHERE PET = `Dogs`
 ```
 
-`AVG()`
+### AVG()
 ```
 # Average cost per dog
 
@@ -290,19 +297,21 @@ SELECT AVG(COST / QUantity) FROM PETRESCUE
 WHERE ANIMAL = `Dogs`
 ```
 
-### Scalar and String Functions
+## Scalar and String Functions
 Perform operations on individual values
 
 `ROUND()`, `LENGTH()`, `UCASE`, `LCASE`
 
-`ROUND()`
+### ROUND()
 
 Round to nearest integer
 ```
 SELECT ROUND(COST) FROM PETRESCUE
+
+SELECT ROUND(COST, 2) FROM PETRESCUE    # 2 decimal places after decimal point
 ```
 
-`LENGTH()`
+### LENGTH()
 
 Only for `CHAR` and `VARCHAR`
 
@@ -311,7 +320,7 @@ Retrieve length of value
 SELECT LENGTH(ANIMAL) FROM PETRESCUE
 ```
 
-`UCASE` / `LCASE`
+### UCASE / LCASE
 
 Retrieve value in uppercase / lowercase
 ```
@@ -331,7 +340,7 @@ WHERE LCASE(ANIMAL) = `cat`
 SELECT DISTINCT(UCASE(ANIMAL)) FROM PETRESCUE
 ```
 
-### Date & Time Functions
+# Date & Time Functions
 DATE: YYYYMMDD
 
 TIME: HHMMSS
@@ -340,7 +349,7 @@ TIMESTAMP: YYYYXXDDHHMMSSZZZZZZ (X: month, Z: ms)
 
 `YEAR()`, `MONTH()`, `DAY()`, `DAYOFMONTH()`, `DAYOFWEEK()`, `DAYOFYEAR()`, `WEEK()`, `HOUR()`, `MINUTE()`, `SECOND()`
 
-`DAY()`
+### DAY()
 
 Extract DAY portion from a date
 ```
@@ -354,15 +363,42 @@ SELECT COUNT(*) FROM petRescue
 WHERE MONTH(rescueDate) = `05`
 ```
 
-Date / Time arithmetic
+## Date / Time arithmetic
 
-`DATE_ADD()`What day is it 3 days after each rescue date
+### DATE_ADD()
+What day is it 3 days after each rescue date
 ```
 SELECT DATE_ADD(rescueDate, INTERVAL 3 DAY) FROM petRescue
 ```
-`FROM_DAYS`, `DATEDIFF`, `CURRENT_DATE`, `CURRENT_TIME`
+
+### FROM_DAYS(), DATEDIFF(), CURRENT_DATE(), CURRENT_TIME()
 
 How many days have passed since each rescue day till now
 ```
 SELECT FROM_DAYS(DATEDIFF(CURRENT_DATE, rescueDate)) FROM petRescue
+```
+# Sub-Queries
+Cannot evaluate Aggregate functions in the WHERE clause
+```
+Ex.
+SELECT salary FROM employees
+        WHERE salary <
+        (SELECT AVG(salary) FROM employees)
+```
+
+## Column Expressions
+Substitute column name with a sub-query
+```
+Ex.
+SELECT salary,
+        (SELECT AVG(salary) FROM employees) AS avg_salary
+FROM employees
+```
+
+## Table Expressions
+Substitute the table name with a sub-query
+```
+Ex.
+SELECT * FROM
+        (SELECT emp_id, f_name, l_name, salary FROM employees) AS emp4all
 ```
