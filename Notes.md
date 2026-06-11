@@ -491,7 +491,9 @@ import sqlite3
 
 conn = sqlite3.connect("INSTRUCTOR.db")
 cursor_obj = conn.cursor()
+```
 
+```
 # create table
 
 cursor_obj.execute("DROP TABLE IF EXISTS INSTRUCTOR")
@@ -502,14 +504,18 @@ table = '''CREATE TABLE IF NOT EXISTS INSTRUCTOR(
                   CITY VARCHAR(20)
                   CCODE CHAR(2));'''
 cursor_obj.execute(table)
+```
 
+```
 # insert data
 
 cursor_obj.execute('''INSERT INTO INSTRUCTOR
                       VALUES (1, 'Rav', 'Ahuja', 'TORONTO', 'CA'),
                                 (2, 'Raul', 'Chong', 'Markham', 'CA'),
                                 (3, 'Hima', 'Vasudevan', 'Chicago', 'US')''')
+```
 
+```
 # fetch all rows
 
 statement = '''SELECT * FROM INSTRUCTOR'''
@@ -518,7 +524,9 @@ cursor_obj.execute(statement)
 output_all = cursor_obj.fetchall()
 for row_all in output_all:
     print(row_all)
+```
 
+```
 # fetch few rows
 
 statement = '''SELECT * FROM INSTRUCTOR'''
@@ -527,7 +535,9 @@ cursor_obj.execute(statement)
 output_few = cursor_obj.fetchmany(2)
 for rows_few in output_few:
     print(rows_few)
+```
 
+```
 # fetch only FNAME
 
 statement = '''SELECT FNAME FROM INSTRUCTOR'''
@@ -536,7 +546,9 @@ cursor_obj.execute(statement)
 output_name = cursor_obj.fetchall()
 for rows_name in output_name:
     print(rows_name)
+```
 
+```
 # update table
 
 statement = '''UPDATE INSTRUCTOR SET CITY="MOOSETOWN" WHERE FNAME="Rav"'''
@@ -549,7 +561,9 @@ print("All the data")
 output1 = cursor_obj.fetchmany(2)
 for row in output1:
     print(row)
+```
 
+```
 # use in pandas dataframe
 
 import pandas as pd
