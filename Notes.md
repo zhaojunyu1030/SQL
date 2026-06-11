@@ -447,7 +447,7 @@ SELECT E.emp_id, D.dep_name FROM employees E, departments D
 
 # Access Databases Using Python (DB-API)
 
-## Connextion Methods
+## Connection Methods
 - `.cursor()` Returns a new cursor object using the connection
 - `.commit()` Commits any pending transaction to the database
 - `.rollback()` Causes the database to rollback to the start of any pending transaction
@@ -466,6 +466,58 @@ Manage the content of a fetch operation
 - `.close()`
 
 ## Writing Code Using DB-API
+
+### .connect()
+```
+import sqlite3
+conn = sqlite3.connect('instructor.db')
+```
+
+### .cursor()
+```
+cursor_obj = conn.cursor()
+```
+
+### .execute()
+```
+cursor_obj.execute('''<SQL statement>''')
+```
+
+### .fetchall()
+```
+statement = <SQL statement>
+cursor_obj.execute(statement)
+
+output_all = cursor_obj.fetchall()
+for row_all in output_all:
+    print(row_all)
+```
+
+### .fetchmany()
+```
+statement = <SQL statement>
+cursor_obj.execute(statement)
+
+output_many = cursor_obj.fetchmany(2)
+for row_many in output_many:
+    print(row_many)
+```
+
+### .read_sql_query()
+```
+df = pd.read_sql_query("<SQL statement>", conn)
+```
+
+### .shape
+```
+df.shape
+```
+
+### .close()
+```
+conn.close()
+```
+
 ```
 from dbmodule import connect
 
@@ -576,4 +628,159 @@ df.LNAME[0]
 df.shape
 
 conn.close()
+```
+# Magic Statements
+Shortcuts that control how the notebook behaves
+
+Install ipython-sql
+```
+!pip install --user ipython-sql
+```
+Enable SQL Magic in Jupyter notebook
+```
+%load_ext sql
+```
+
+## Line Magics
+Commands that are prefixed with `%` and operate on a single line of input
+
+- `%pwd` print the current working directory
+- `%ls` list all the files in current directory
+- `%history` show all the command history
+- `%reset` reset the namespace by removing all names defined by the user
+- `%who` list all variables in the namespace
+- `%whos` more detailed information
+- `%matplotlib inline` make matplotlib plots appear within the notebook
+- `%timeit` times the execution of a single statement
+- `%lsmagic` list all available line magics
+
+Time for executing single statement
+```
+Ex.
+%timeit <statement>
+```
+
+## Cell Magics
+Commands that are prefixed with `%%` and operate on multiple lines of input
+
+Allows to write code in other languages
+- `%%HTML` Write HTML code in code and render it
+- `%%javascript` Write JavaScript code in cells
+- `%%bash cell` Write bash commands
+
+Time for executing the whole cell
+```
+Ex.
+%%timeit
+<statement1>
+<statement2>
+<statement3>
+```
+
+## Access SQLite Databases with SQL Magics
+```
+# 1. Install and load everything
+
+!pip install ipython-sql
+%load_ext sql    # load the external module
+```
+
+```
+# 2. Connect to a database
+
+import sqlite3
+conn = sqlite3.connect('HR.db')
+%sql sqlite:///HR.db    # connect SQL Magic module to the SQL server being accessed
+```
+
+```
+# 3. Run SQL using line magic for a single line
+
+%sql SELECT * FROM Employee
+```
+
+```
+# 4. Run SQL using cell magic for multiple lines
+
+%%sql
+SELECT *
+FROM Employees
+WHERE City = "Chicago"
+```
+
+```
+# 5. Save query result into a Python variable
+
+result = %sql SELECT * FROM Employees
+df = result.DataFrame()
+print(df)
+```
+
+# Analyze Data with Python
+
+## Pandas
+
+### .read_csv()
+```
+import pandas
+df = pd.read_csv("<csv file>")
+```
+
+### .to_sql()
+```
+import pandas
+df = pd.read_csv("<csv file>")
+df.to_sql("<table>", conn, if_exists='replace', index=False)
+```
+
+### .read_sql()
+```
+df = pd.read_sql("<SQL statement>", conn)
+```
+
+## Seaborn
+
+### .barplot()
+```
+import seaborn as sns
+sns.barplot(x='Test_Score', y='Frequency', data=df)
+```
+
+## Load CSV to SQLite3 with Pandas
+```
+import pandas as pd
+import sqlite3
+
+data = pd.read_csv('./menu.csv')          # read database
+conn = sqlite3.connect('McDonalds.db')    # connection object
+data.to_sql('MCDONALDS_NUTRITION', conn)    # data loaded as a table to the database
+
+# Use Pandas to retrieve data from database tables
+
+df = pd.read_sql("SELECT * FROM MCDONALDS_NUTRITION", conn)
+print(df)
+
+df.head()    # View the first rows
+df.describe(include='all')    # summary statistics of data
+
+# Plot data
+
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+plot = sns.swarmplot(x='Category', y='Sodium', data=df)
+plt.setp(plot.get_xticklabels(), rotation=70)
+plt.title('Sodium Content')
+plt.show()
+
+# Which item has maximum sodium content
+df['Sodium'].describe()    # maximum value
+df['Sodium'].idxmax()    # idx val at which the max val is obtained
+df.at[82, 'Item']    # the associated item name
+
+# Further exploration (correlation between protein and total fat)
+
+plot = sns.jointplot(x="Protein", y="Total Fat", data=df)
+plot.show()
 ```
